@@ -1,0 +1,149 @@
+{% extends 'base.html' %}
+{% load static %}
+    {% block content %}
+    <head>
+        <style type="text/css">
+            #detail {
+                display: flex;
+                margin-bottom: 20px;
+            }
+            #cover {
+                margin-right:20px;
+                margin-top: 10px;
+            }
+            * {
+                text-align: left;
+            }
+
+            #information {
+                width: 1000px;
+                margin-top: 10px;
+                font-family: 'ChosunSg';
+            }
+            .canv {background-color: whitesmoke;}
+
+            @font-face {
+                font-family: 'LAB디지털';
+                src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-07@1.0/LAB디지털.woff') format('woff');
+                font-weight: normal;
+                font-style: normal;
+            }
+            @font-face {
+                font-family: 'twaysky';
+                src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_tway@1.0/twaysky.woff') format('woff');
+                font-weight: normal;
+                font-style: normal;
+            }
+            @font-face {
+                font-family: 'ChosunSg';
+                src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-04@1.0/ChosunSg.woff') format('woff');
+                font-weight: normal;
+                font-style: normal;
+            }
+        </style>
+    </head>
+
+      <span style="text-shadow: 2px 2px 0px #999; font-size:55px;"><b>{{ music.rank }}</b></span>
+      <span style="font-size:40px; margin-left: 10px;"><b>{{ music.title }}</b></span><br>
+        <div id='detail'>
+        <img id='cover' src="{{ music.cover_imgurl }}" alt="" width="300" height="300">
+        <div id='information'>
+            <h5><strong>{{ music.title}}</strong></h5>
+            <span>{{ music.singer }}</span><br><br>
+            <span style="margin-right: 20px;"><strong>발매일</strong> </span>
+            <span>{{ music.debut_date }}</span><br>
+            <span style="margin-right: 20px;"><strong>작곡가</strong> </span>
+            {% for producer in producers %}
+                <span style="margin-right: 7px;">{{ producer.name }}</span>
+            {% endfor %}
+            <br>
+            <span style="margin-right: 20px;"><strong>작사가</strong> </span>
+            {% for writer in writers %}
+                <span style="margin-right: 7px;">{{ writer.name }}</span>
+            {% endfor %}
+            <br>
+        </div>
+        </div>
+        <br>
+        <canvas class="canv" width="1000px" height="400px">
+
+        </canvas>
+  
+        <script>
+            const canv = document.querySelector(".canv");
+            const context = canv.getContext('2d');
+    
+            context.font = "12pt LAB디지털";
+    
+            const debut_date = "{{music.debut_date}}";
+            const last_date = "2021-07-29";
+            const current_date = "2021-08-05"
+            context.fillText(debut_date,30,370);
+            context.fillText(last_date,315,370);
+            context.fillText(current_date,595,370);
+    
+            context.moveTo(30,340);
+            context.lineTo(680,340);
+            context.stroke();
+    
+            const debut_rank = "{{music.debut_rank}}";
+            const last_rank = "{{music.last_week}}";
+            const current_rank = "{{music.rank}}";
+    
+            const debut_pos = 35 + (3*debut_rank);
+            const last_pos = 35 + (3*last_rank);
+            const current_pos = 35 + (3*current_rank);
+    
+            context.font = "12pt twaysky";
+    
+            context.fillText(debut_rank,60,debut_pos-20);
+            context.fillText(last_rank,360,last_pos-20);
+            context.fillText(current_rank,660,current_pos-20);
+    
+            context.moveTo(60,debut_pos);
+            context.lineTo(360,last_pos);
+            context.lineTo(660,current_pos);
+            context.stroke();
+    
+            context.strokeStyle = 'lightgray';
+    
+            context.beginPath();
+            context.moveTo(60,debut_pos);
+            context.lineTo(60,340);
+            context.stroke();
+    
+            context.moveTo(360,last_pos);
+            context.lineTo(360,340);
+            context.stroke();
+    
+            context.moveTo(660,current_pos);
+            context.lineTo(660,340);
+            context.stroke();
+    
+            const weeks_on_chart = '{{music.weeks_on_chart}}';
+            const peak_date = '{{music.peak_date}}';
+            const peak_rank = '{{music.peak_rank}}';
+    
+            context.font = "50pt twaysky";
+            context.fillText(weeks_on_chart, 720, 130);
+            context.font = "12pt twaysky";
+            context.fillText('weeks on chart', 735, 155);
+    
+            context.font = "50pt twaysky";
+            context.fillText(peak_rank, 720, 230);
+            context.font = "12pt twaysky";
+            context.fillText('peaked at '+peak_date, 735, 255);
+    
+          </script>
+
+    <hr>
+      <h3 style="font-family: 'ChosunSg';"><strong>Artist</strong></h3>
+        <div id='detail'>
+        <img id='cover' src="{{ music.artist_imgurl }}" alt="" width="150" height="150">
+        <div id='information'>
+            <span>{{music.singer}}</span><br>
+            <a href="{{ music.artist_url }}">more</a>
+        </div>
+        </div>
+    <br><br>
+    {% endblock %}

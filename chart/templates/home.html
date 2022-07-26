@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+    {% block content %}
+        <head>
+            <style>
+                .horizon {
+                    display: flex;
+                    flex-direction: row;
+                    margin-top: 10px;
+                    margin-bottom: 10px;
+                    width: 100%;
+                    align-items: center;
+                    font-family: 'GmarketSansBold';
+                }
+                .rank {
+                    width: 120px;
+                }
+                .cover {
+                    margin-right: 20px;
+                }
+                .title {
+                    margin-right: 50px;
+                    text-decoration: none;
+                    color: black;
+                    font-size: 18pt;
+                }
+                .singer {
+                    text-decoration: none;
+                    color: black;
+                    font-size: 10pt;
+                }
+                .right{ text-align: right;
+                    flex: auto;
+                }
+                .date {font-size: 9pt;}
+                @font-face {
+                    font-family: 'GmarketSansBold';
+                    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansBold.woff') format('woff');
+                    font-weight: normal;
+                    font-style: normal;
+                }
+            </style>
+        </head>
+        <h3 style="font-family: 'GmarketSansBold'; margin-top: 40px;margin-bottom: 20px; font-size: 30pt;">billboard 🔥 100</h3>
+        <h5 style="font-family: 'GmarketSansBold'; margin-top: 20px;margin-bottom: 40px; font-size: 14pt; color:rgb(68, 83, 83)">2021-08-05</h5>
+        {% if length < 100%}
+            <p style="font-family: 'GmarketSansBold'; margin-top: 40px;margin-bottom: 40px; font-size: 20pt;">{{length}} found</p>
+        {% endif %}
+        <hr>
+        {% for music in musics %}
+            <div class="horizon">
+                <hr>
+                <h2 class="rank">{{music.rank}}</h2>
+                <a href="{% url 'chart:detail' music.id %}"><img class="cover" src="{{ music.cover_imgurl }}" alt="" width="180" height="180"></a>
+                <a class="title" href="{% url 'chart:detail' music.id %}"><p>{{ music.title }}</p></a>
+                <div class="right">
+            
+                    <a class="singer" href="{{ music.artist_url }}">{{ music.singer }}</a>
+                    <p style="text-align: right;" class="date"> {{music.debut_date}} </p>
+                
+                </div>
+            </div> <hr>
+        {% endfor %}
+    {% endblock %}
